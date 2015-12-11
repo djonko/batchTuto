@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beansProjectDescription>
 	<version>1</version>
+<<<<<<< HEAD
 	<pluginVersion><![CDATA[3.7.1.201510041102-RELEASE]]></pluginVersion>
+=======
+	<pluginVersion><![CDATA[3.7.2.201511260958-RELEASE]]></pluginVersion>
+>>>>>>> a1a194b3bb328349b729a53abcc0ea3a1a45b18a
 	<configSuffixes>
 		<configSuffix><![CDATA[xml]]></configSuffix>
 	</configSuffixes>
@@ -9,7 +13,10 @@
 	<configs>
 		<config>src/resources/other/db_config.xml</config>
 		<config>src/resources/spring/config.xml</config>
+<<<<<<< HEAD
 		<config>src/resources/spring/context.xml</config>
+=======
+>>>>>>> a1a194b3bb328349b729a53abcc0ea3a1a45b18a
 	</configs>
 	<autoconfigs>
 		<config>java:com.sydja.batchTuto.batch.SampleBatchApplication</config>
