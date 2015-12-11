@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-=======
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
->>>>>>> a1a194b3bb328349b729a53abcc0ea3a1a45b18a
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<!-- Your own application should inherit from spring-boot-starter-parent -->
@@ -36,16 +32,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> a1a194b3bb328349b729a53abcc0ea3a1a45b18a
 		<!-- MySQL database driver -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-<<<<<<< HEAD
 		</dependency>
 
 		<!-- Spring OXM -->
@@ -68,9 +59,6 @@
 
 
 
-=======
-			</dependency>
->>>>>>> a1a194b3bb328349b729a53abcc0ea3a1a45b18a
 	</dependencies>
 	<build>
 		<plugins>
