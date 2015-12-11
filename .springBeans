@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.7.1.201510041102-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/resources/other/db_config.xml</config>
+		<config>src/resources/spring/config.xml</config>
+		<config>src/resources/spring/context.xml</config>
+	</configs>
+	<autoconfigs>
+		<config>java:com.sydja.batchTuto.batch.SampleBatchApplication</config>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

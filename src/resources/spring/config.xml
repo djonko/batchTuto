@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.2.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<import resource="context.xml" />
+	<context:property-placeholder location="classpath:properties/batch.properties"
+		ignore-resource-not-found="false" />
+
+	<batch:job id="mysql_to_xml">
+		<batch:step id="step1" next="step2">
+			<batch:tasklet>
+				<batch:chunk reader="itemReaderCursor" writer="itemWriter" commit-interval="2" />
+			</batch:tasklet>
+		</batch:step>
+
+		<batch:step id="step2">
+            <batch:tasklet ref="sendMailManager" />
+		</batch:step>
+	</batch:job>
+
+
+
+
+
+
+
+
+	<!-- Cursor itemReader definition -->
+	<bean id="itemReaderCursor" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="sql" value="SELECT id, statut, libelle, content, email FROM message" />
+		<property name="rowMapper">
+			<bean class="com.sydja.batchTuto.batch.CustomRowMapper" />
+		</property>
+
+	</bean>
+
+	<!-- Pagination ItemReader definition -> for big records -->
+	<bean id="pagingItemReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
+		<property name="dataSource" ref="dataSource" />
+		<property name="queryProvider">
+			<bean class="org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean">
+				<property name="dataSource" ref="dataSource" />
+				<property name="selectClause" value="SELECT id, statut, libelle, content, email" />
+				<property name="fromClause" value="FROM message" />
+				<property name="whereClause" value="WHERE statut= :statut" />
+				<property name="sortKey" value="id" />
+			</bean>
+		</property>
+		<property name="parameterValues">
+			<util:map>
+				<entry key="statut" value="#{jobParameters['statut']}" />
+			</util:map>
+		</property>
+		<property name="pageSize" value="10" />
+		<property name="rowMapper">
+			<bean class="com.sydja.batchTuto.batch.CustomRowMapper" />
+		</property>
+	</bean>
+
+
+	<bean id="messageUnmarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="aliases">
+			<util:map>
+				<entry key="message" value="com.sydja.batchTuto.model.Message" />
+			</util:map>
+		</property>
+	</bean>
+
+	<bean id="itemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
+		<property name="resource" value="${xml.path}"></property>
+		<property name="marshaller" ref="messageUnmarshaller"></property>
+		<property name="rootTagName" value="messages"></property>
+	</bean>
+
+	<!-- the java send Mail Bean -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${smtp.host}" />
+		<property name="port" value="${smtp.port}" />
+		<property name="username" value="${smtp.user}" />
+		<property name="password" value="${smtp.password}" />
+		<property name="javaMailProperties" value="${mail.smtp.auth}" />
+	</bean>
+
+	<bean id="sendMailManager" class="com.sydja.batchTuto.batch.SendMailTasklet">
+		<property name="mailSender" ref="mailSender" />
+		<property name="sendMailService" ref="sendMailService" />
+		<property name="senderAddress" value="pdb-sydja@bitrix24.com" />
+		<property name="recipient" value="prevostdjonko@gmail.com" />
+		<property name="attachmentFilePath" value="${xml.pathAttachement}" />
+	</bean>
+	
+	<bean id="sendMailService" class="com.sydja.batchTuto.batch.mail.SendMailService" scope="prototype" />
+
+</beans>

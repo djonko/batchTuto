@@ -1,0 +1,4 @@
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/batchTuto-master/src/resources/spring/config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph>\r\n<element clazz\="JobModelElement" type\="job">\r\n<structure end\="1437" endstart\="1425" start\="1119" startend\="1148"/>\r\n<bounds height\="168" width\="133" x\="15" y\="17"/>\r\n</element>\r\n</graph>
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/batchTuto-master/src/resources/spring/context.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/batch\:/batchTuto/src/resources/spring/config.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph/>
+eclipse.preferences.version=1
