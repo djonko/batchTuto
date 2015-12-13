@@ -12,14 +12,21 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
     <import resource="../other/db_config.xml" />
 
+ <!--
     <bean id="jobRepository" class="org.springframework.batch.core.repository.support.JobRepositoryFactoryBean">
-        <property name="dataSource" ref="dataSource" />
+        
         <property name="transactionManager" ref="transactionManager" />
         <property name="databaseType" value="mysql" />
+        <property name="dataSource" ref="dataSource" />
+         
     </bean>
+    -->
     
+    <bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
     
-    <bean id="jobLauncher"  class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+    <bean id="jobLauncher"  class="org.springframework.batch.core.launch.support.SimpleJobLauncher" scope="prototype">
         <property name="jobRepository" ref="jobRepository" />
     </bean>
 </beans>

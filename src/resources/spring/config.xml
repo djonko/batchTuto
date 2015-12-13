@@ -12,7 +12,7 @@
 	<context:property-placeholder location="classpath:properties/batch.properties"
 		ignore-resource-not-found="false" />
 
-	<batch:job id="mysql_to_xml">
+	<batch:job id="mysql_to_xml_job" >
 		<batch:step id="step1" next="step2">
 			<batch:tasklet>
 				<batch:chunk reader="itemReaderCursor" writer="itemWriter" commit-interval="2" />
@@ -86,16 +86,19 @@
 		<property name="username" value="${smtp.user}" />
 		<property name="password" value="${smtp.password}" />
 		<property name="javaMailProperties" value="${mail.smtp.auth}" />
+		<property name="session"  value="#{sessionFactory.getSession()}" ></property>
 	</bean>
 
+	<bean id="sessionFactory" class="com.sydja.batchTuto.batch.SessionFactory"></bean>
+	
 	<bean id="sendMailManager" class="com.sydja.batchTuto.batch.SendMailTasklet">
 		<property name="mailSender" ref="mailSender" />
 		<property name="sendMailService" ref="sendMailService" />
-		<property name="senderAddress" value="pdb-sydja@bitrix24.com" />
-		<property name="recipient" value="prevostdjonko@gmail.com" />
+		<property name="senderAddress" value="prevostdjonko@gmail.com" />
+		<property name="recipient" value="pdb-sydja@bitrix24.com" />
 		<property name="attachmentFilePath" value="${xml.pathAttachement}" />
 	</bean>
 	
-	<bean id="sendMailService" class="com.sydja.batchTuto.batch.mail.SendMailService" scope="prototype" />
+	<bean id="sendMailService" class="com.sydja.batchTuto.batch.mail.SendMailService"  />
 
 </beans>

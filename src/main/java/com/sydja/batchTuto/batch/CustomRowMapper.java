@@ -13,8 +13,12 @@ public class CustomRowMapper implements RowMapper<Message> {
 
 	@Override
 	public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Message message=new Message();
+		message.setId(rs.getInt("id"));
+		message.setStatut(rs.getString("statut"));
+		message.setContent(rs.getString("content"));
+		message.setEmail(rs.getString("email"));
+		return message;
 	}
 
 
