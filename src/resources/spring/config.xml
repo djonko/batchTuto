@@ -19,18 +19,51 @@
 			</batch:tasklet>
 		</batch:step>
 
-		<batch:step id="step2">
+        <batch:step id="step2">
+            <batch:tasklet>
+                <batch:chunk reader="xmlReader" processor="meesageProcessor" writer=""></batch:chunk>
+            </batch:tasklet>
+            <batch:next on="*" to="step3"/>
+        </batch:step>
+        
+		<batch:step id="step3">
             <batch:tasklet ref="sendMailManager" />
 		</batch:step>
+		
 	</batch:job>
 
 
 
 
 
+    <!-- xml reader -->
+    <bean id="xmlReader" class="org.springframework.batch.item.xml.StaxEventItemReader">
+        <property name="fragmentRootElementName" value="message"/>
+        <property name="resource" value="${xml.path}"/>
+        <property name="unmarshaller" ref="xmlUnmarshallerForReader"/>
+    </bean>
 
-
-
+    <!-- xml unmarchaler -->
+    <bean id="xmlUnmarshallerForReader" class="org.springframework.oxm.xstream.XStreamMarshaller">
+        <property name="aliases">
+            <util:map id="aliases">
+                <entry key="message" value="com.sydja.batchTuto.model.Message" />
+            </util:map>
+        </property>
+        
+        <property name="converters">
+            <array>
+                <ref bean="xmlMessageToObejct"/>
+            </array>
+        </property>
+    </bean>
+    
+    <!-- xml to message object -->
+    <bean id="xmlMessageToObejct" class="com.sydja.batchTuto.batch.tools.xmlMessageConverter" />
+    
+    <!-- message processor -->
+    <bean id="meesageProcessor" class="com.sydja.batchTuto.batch.tools.MessageProcessor"></bean>
+    
 	<!-- Cursor itemReader definition -->
 	<bean id="itemReaderCursor" class="org.springframework.batch.item.database.JdbcCursorItemReader" scope="step">
 		<property name="dataSource" ref="dataSource" />
@@ -38,8 +71,9 @@
 		<property name="rowMapper">
 			<bean class="com.sydja.batchTuto.batch.CustomRowMapper" />
 		</property>
-
 	</bean>
+
+    
 
 	<!-- Pagination ItemReader definition -> for big records -->
 	<bean id="pagingItemReader" class="org.springframework.batch.item.database.JdbcPagingItemReader" scope="step">
@@ -65,7 +99,7 @@
 	</bean>
 
 
-	<bean id="messageUnmarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+	<bean id="messageMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
 		<property name="aliases">
 			<util:map>
 				<entry key="message" value="com.sydja.batchTuto.model.Message" />
@@ -75,7 +109,7 @@
 
 	<bean id="itemWriter" class="org.springframework.batch.item.xml.StaxEventItemWriter">
 		<property name="resource" value="${xml.path}"></property>
-		<property name="marshaller" ref="messageUnmarshaller"></property>
+		<property name="marshaller" ref="messageMarshaller"></property>
 		<property name="rootTagName" value="messages"></property>
 	</bean>
 
